@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Management.Automation;
+using System.Net;
 
 namespace Flexpod.powershell
 {
@@ -72,6 +73,17 @@ namespace Flexpod.powershell
             {
                 // actual creation of the record
                 WriteVerbose(string.Format("User {0} created", UserName));
+
+                // post data to web API
+                var URI = "http://localhost:49321/api/FlexpodUser";
+                var myParameters = string.Format("Username={0}&Password={1}&Email={2}",
+                    UserName, Password, EmailAddress);
+                using (var webClient = new WebClient())
+                {
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                    var htmlResult = webClient.UploadString(URI, myParameters);
+                }
+
                 // pass properties to the pipeline
                 WriteObject(new { UserName, Password, EmailAddress });
             }
