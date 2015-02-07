@@ -75,7 +75,11 @@ namespace Flexpod.powershell
                 WriteVerbose(string.Format("User {0} created", UserName));
 
                 // post data to web API
+#if DEBUG
                 var URI = "http://localhost:49321/api/FlexpodUser";
+#else
+                var URI = "http://localhost/api/FlexpodUser";
+#endif
                 var myParameters = string.Format("Username={0}&Password={1}&Email={2}",
                     UserName, Password, EmailAddress);
                 using (var webClient = new WebClient())
