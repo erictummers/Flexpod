@@ -36,7 +36,7 @@ namespace Flexpod.MVC.Controllers
                     var errorMessage = ErrorCodeToString(e.StatusCode);
                     System.Diagnostics.Trace.TraceWarning(errorMessage);
                     ModelState.AddModelError("", errorMessage);
-                    return Request.CreateResponse<FlexpodUserModel>(HttpStatusCode.InternalServerError, model);
+                    return Request.CreateResponse<FlexpodUserModel>(HttpStatusCode.BadRequest, model);
                 }
                 catch (Exception e)
                 {
