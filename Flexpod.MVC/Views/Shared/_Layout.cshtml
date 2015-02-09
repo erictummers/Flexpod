@@ -14,9 +14,7 @@
             );
             var url = regex.Replace(hostHeader, ".scm.", 1);
 
-            var scmLink = string.Format("{0}://{1}/DebugConsole/?shell=powershell",
-                   url,
-                   hostHeader);
+            var scmLink = string.Format("https://{0}/DebugConsole/?shell=powershell", url);
         }
     </head>
     <body>

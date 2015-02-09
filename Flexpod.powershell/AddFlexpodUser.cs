@@ -66,9 +66,9 @@ namespace Flexpod.powershell
         {
             base.ProcessRecord();
             // messages for verbose, what-if and confirm
-            var verboseDescription = string.Format("Creating {0} {1} {2}", UserName, Password, EmailAddress);
+            var verboseDescription = string.Format("Creating {0} {1} {2}", UserName, EmailAddress, Password);
             var verboseWarning = "Are you sure?";
-            var caption = string.Format("Creating {0} {1} {2}", UserName, Password, EmailAddress);
+            var caption = string.Format("Creating {0} {1} {2}", UserName, EmailAddress, Password);
             if (ShouldProcess(verboseDescription, verboseWarning, caption))
             {
                 // actual creation of the record
