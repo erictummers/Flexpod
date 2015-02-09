@@ -76,9 +76,9 @@ namespace Flexpod.powershell
 
                 // post data to web API
 #if DEBUG
-                var URI = "http://localhost:49321/api/FlexpodUser";
+                var URI = "http://localhost:49321/api/FlexpodUser";                
 #else
-                var URI = "http://localhost/api/FlexpodUser";
+                var URI = string.Format("http://{0}/api/FlexpodUser", Environment.MachineName);
 #endif
                 var myParameters = string.Format("Username={0}&Password={1}&Email={2}",
                     UserName, Password, EmailAddress);
@@ -89,7 +89,7 @@ namespace Flexpod.powershell
                 }
 
                 // pass properties to the pipeline
-                WriteObject(new { UserName, Password, EmailAddress });
+                WriteObject(new { UserName, EmailAddress, Password });
             }
         }
 
