@@ -7,6 +7,17 @@
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
         @Scripts.Render("~/bundles/modernizr")
+        @{
+            var hostHeader = Request.Headers["host"];
+            var regex = new System.Text.RegularExpressions.Regex(
+                System.Text.RegularExpressions.Regex.Escape(".")
+            );
+            var url = regex.Replace(hostHeader, ".scm.", 1);
+
+            var scmLink = string.Format("{0}://{1}/DebugConsole/?shell=powershell",
+                   Request.Url.Scheme,
+                   hostHeader);
+        }
     </head>
     <body>
         <header>
@@ -23,6 +34,7 @@
                             <li>@Html.ActionLink("Home", "Index", "Home")</li>
                             <li>@Html.ActionLink("About", "About", "Home")</li>
                             <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            <li><a href="@scmLink">Kudu</a></li>
                         </ul>
                     </nav>
                 </div>
