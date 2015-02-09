@@ -96,7 +96,7 @@ IF !ERRORLEVEL! NEQ 0 goto error
 
 
 :: register flexpod.powershell.dll module
-%PSModulePath% = %PSModulePath%;%DEPLOYMENT_TARGET%\bin
+SET %PSModulePath% = %PSModulePath%;%DEPLOYMENT_TARGET%\bin
 powershell import-module %DEPLOYMENT_TARGET%\bin\Flexpod.powershell.dll -verbose
 
 goto end
