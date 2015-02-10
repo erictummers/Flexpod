@@ -11,7 +11,7 @@ namespace Flexpod.MVC.Models
 {
     public class UsersContext : DbContext
     {
-        public UsersContext() : base("DefaultConnection")
+        public UsersContext() : base("AuthConnection")
         {
         }
 

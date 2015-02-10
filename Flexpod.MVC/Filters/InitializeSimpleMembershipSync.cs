@@ -37,7 +37,7 @@ namespace Flexpod.MVC.Filters
                     }
                 }
 
-                WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                WebSecurity.InitializeDatabaseConnection("AuthConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
             }
             catch (Exception ex)
             {
