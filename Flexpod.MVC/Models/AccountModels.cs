@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Security;
+using WebMatrix.WebData;
 
 namespace Flexpod.MVC.Models
 {
@@ -16,6 +19,35 @@ namespace Flexpod.MVC.Models
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        }
+    }
+
+    public class MigrationConfiguration : DbMigrationsConfiguration<UsersContext>
+    {
+        public MigrationConfiguration()
+        {
+            this.AutomaticMigrationsEnabled = true;
+        }
+
+        protected override void Seed(UsersContext context)
+        {
+            WebSecurity.InitializeDatabaseConnection("AuthConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+#if DEBUG
+            if (false == WebSecurity.UserExists("admin"))
+            {
+                WebSecurity.CreateUserAndAccount("admin", "password", propertyValues: new
+                {
+                    EmailAddress = "info@flexpod.nl",
+                    IsLockedOut = false
+                });
+            }
+#endif
+        }
     }
 
     [Table("UserProfile")]

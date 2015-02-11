@@ -1,5 +1,4 @@
-﻿using Flexpod.MVC.Filters;
-using Flexpod.MVC.Models;
+﻿using Flexpod.MVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,6 @@ using WebMatrix.WebData;
 
 namespace Flexpod.MVC.Controllers
 {
-    [InitializeSimpleMembershipApiAttribute]
     public class FlexpodUserController : ApiController
     {
         public HttpResponseMessage PostFlexpodUser(FlexpodUserModel model)
@@ -22,31 +20,31 @@ namespace Flexpod.MVC.Controllers
                 try
                 {
                     WebSecurity.CreateUserAndAccount(
-                        model.UserName, 
+                        model.UserName,
                         model.Password,
                         propertyValues: new
                         {
                             EmailAddress = model.EmailAddress,
-                            isLockedOut = false
+                            IsLockedOut = false
                         });
                     return Request.CreateResponse<FlexpodUserModel>(HttpStatusCode.Created, model);
                 }
                 catch (MembershipCreateUserException e)
                 {
                     var errorMessage = ErrorCodeToString(e.StatusCode);
-                    System.Diagnostics.Trace.TraceWarning(errorMessage);
+                    System.Diagnostics.Trace.TraceError(errorMessage);
                     ModelState.AddModelError("", errorMessage);
-                    return Request.CreateResponse<FlexpodUserModel>(HttpStatusCode.BadRequest, model);
+                    return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
                 }
                 catch (Exception e)
                 {
                     var errorMessage = e.Message;
-                    System.Diagnostics.Trace.TraceWarning(errorMessage);
+                    System.Diagnostics.Trace.TraceError(errorMessage);
                     ModelState.AddModelError("", errorMessage);
-                    return Request.CreateResponse<FlexpodUserModel>(HttpStatusCode.InternalServerError, model);
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, ModelState);
                 }
-            }
-            return Request.CreateResponse<FlexpodUserModel>(HttpStatusCode.BadRequest, model);
+            }            
+            return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
         }
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)

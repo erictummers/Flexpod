@@ -17,14 +17,14 @@ namespace Flexpod.MVC.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your app description page.";
+            ViewBag.Message = "You've been granted access.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Ignore the details here.";
 
             return View();
         }
