@@ -71,15 +71,17 @@ namespace Flexpod.powershell
             var caption = string.Format("Creating {0} {1} {2}", UserName, EmailAddress, Password);
             if (ShouldProcess(verboseDescription, verboseWarning, caption))
             {
-                // actual creation of the record
-                WriteVerbose(string.Format("User {0} created", UserName));
-
                 // post data to web API
 #if DEBUG
-                var URI = "http://localhost:49321/api/FlexpodUser";                
+                var URI = "http://localhost:49321/api/FlexpodUser";
 #else
-                var URI = string.Format("http://{0}/api/FlexpodUser", Environment.MachineName);
+                var machine = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
+                if (string.IsNullOrEmpty(machine)) machine = Environment.MachineName;
+                var URI = string.Format("http://{0}/api/FlexpodUser", machine);
 #endif
+                WriteVerbose(string.Format("Calling API on {0}", URI));
+
+                // actual creation of user
                 var myParameters = string.Format("Username={0}&Password={1}&Email={2}",
                     UserName, Password, EmailAddress);
                 using (var webClient = new WebClient())
@@ -87,6 +89,7 @@ namespace Flexpod.powershell
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
                     var htmlResult = webClient.UploadString(URI, myParameters);
                 }
+                WriteVerbose(string.Format("User {0} created", UserName));
 
                 // pass properties to the pipeline
                 WriteObject(new { UserName, EmailAddress, Password });
