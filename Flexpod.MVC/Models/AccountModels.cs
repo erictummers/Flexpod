@@ -26,7 +26,7 @@ namespace Flexpod.MVC.Models
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string EmailAddress { get; set; }
-        public bool isLockedOut { get; set; }
+        public bool IsLockedOut { get; set; }
     }
 
     public class LocalPasswordModel
@@ -76,7 +76,7 @@ namespace Flexpod.MVC.Models
 
         [Required]
         [Display(Name = "E-mail address")]
-        public string Email { get; set; }
+        public string EmailAddress { get; set; }
 
         [Display(Name = "Is locked out")]
         public bool IsLockedOut { get; set; }
