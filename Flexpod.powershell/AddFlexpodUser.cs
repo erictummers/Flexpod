@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Management.Automation;
 using System.Net;
+using System.IO;
 
 namespace Flexpod.powershell
 {
@@ -82,17 +83,28 @@ namespace Flexpod.powershell
                 WriteVerbose(string.Format("Calling API on {0}", URI));
 
                 // actual creation of user
-                var myParameters = string.Format("Username={0}&Password={1}&Email={2}",
+                var myParameters = string.Format("Username={0}&Password={1}&EmailAddress={2}",
                     UserName, Password, EmailAddress);
-                using (var webClient = new WebClient())
+                try
                 {
-                    webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
-                    var htmlResult = webClient.UploadString(URI, myParameters);
-                }
-                WriteVerbose(string.Format("User {0} created", UserName));
+                    using (var webClient = new WebClient())
+                    {
+                        webClient.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                        var htmlResult = webClient.UploadString(URI, myParameters);
+                    }
+                    WriteVerbose(string.Format("User {0} created", UserName));
 
-                // pass properties to the pipeline
-                WriteObject(new { UserName, EmailAddress, Password });
+                    // pass properties to the pipeline
+                    WriteObject(new { UserName, EmailAddress, Password });
+                } 
+                catch (WebException ex)
+                {
+                    var exceptionResponse = (ex.Response as HttpWebResponse);
+                    var reader = new StreamReader(exceptionResponse.GetResponseStream());
+                    var message = reader.ReadToEnd();
+                    WriteError(new ErrorRecord(ex, exceptionResponse.StatusCode.ToString(),
+                        ErrorCategory.ConnectionError, null) { ErrorDetails = new ErrorDetails(message) });
+                }
             }
         }
 
