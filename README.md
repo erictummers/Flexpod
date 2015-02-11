@@ -15,4 +15,5 @@ This information is saved in the csproj.user file and not committed to Git
 ## Deployment
 
 Just click the button to host in Azure
+
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
