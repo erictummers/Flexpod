@@ -10,7 +10,7 @@ namespace Flexpod.MVC.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+            ViewBag.Message = "Awesome demo app for powershell modules";
 
             return View();
         }

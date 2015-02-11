@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Flexpod";
 }
 @section featured {
     <section class="featured">
@@ -9,37 +9,37 @@
                 <h2>@ViewBag.Message</h2>
             </hgroup>
             <p>
-                To learn more about ASP.NET MVC visit
-                <a href="http://asp.net/mvc" title="ASP.NET MVC Website">http://asp.net/mvc</a>.
-                The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET MVC.
-                If you have any questions about ASP.NET MVC visit
-                <a href="http://forums.asp.net/1146.aspx/1?MVC" title="ASP.NET MVC Forum">our forums</a>.
+                This application is used in a powershell demo. The concept presented
+                is that the developer is building management forms is all wrong. 
+                Operations is used to powershell for maintenance and management. That
+                is why we should build a powershell module for these tasks.
             </p>
         </div>
     </section>
 }
-<h3>We suggest the following:</h3>
+<h3>Flow of the demo:</h3>
 <ol class="round">
     <li class="one">
-        <h5>Getting Started</h5>
-        ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-        enables a clean separation of concerns and that gives you full control over markup
-        for enjoyable, agile development. ASP.NET MVC includes many features that enable
-        fast, TDD-friendly development for creating sophisticated applications that use
-        the latest web standards.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245151">Learn more…</a>
+        <h5>Open the Kudu link</h5>
+        Azure websites have tooling provided out-of-the-box. This includes
+        a powershell console right in your webbrowser. There you can import
+        the flexpod.powershell.dll module from the bin folder.
+        <a href="https://github.com/projectkudu/kudu/wiki/Kudu-console">Learn more…</a>
     </li>
 
     <li class="two">
-        <h5>Add NuGet packages and jump-start your coding</h5>
-        NuGet makes it easy to install and update free libraries and tools.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245153">Learn more…</a>
+        <h5>Create user</h5>
+        The powershell module offers the commandlet Add-FlexpodUser. This creates
+        a user for the application. The commandlet can be used with the pipeline, 
+        supports common parameters and passes information on the pipeline.
+        <a href="https://technet.microsoft.com/en-us/library/hh847856.aspx">Learn more…</a>
     </li>
 
     <li class="three">
-        <h5>Find Web Hosting</h5>
-        You can easily find a web hosting company that offers the right mix of features
-        and price for your applications.
-        <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Learn more…</a>
+        <h5>Open Secret page</h5>
+        To gain access to the Secret page you need to login. The only way to create
+        a user is with the powershell module. (see step 2) You know why when you
+        open te page.
+        @Html.ActionLink("Learn more…", "About", "Home")
     </li>
 </ol>
