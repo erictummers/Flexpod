@@ -24,8 +24,7 @@ namespace Flexpod.MVC.Controllers
                         model.Password,
                         propertyValues: new
                         {
-                            EmailAddress = model.EmailAddress,
-                            IsLockedOut = false
+                            EmailAddress = model.EmailAddress
                         });
                     return Request.CreateResponse<FlexpodUserModel>(HttpStatusCode.Created, model);
                 }
