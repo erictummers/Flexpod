@@ -32,6 +32,7 @@ namespace Flexpod.MVC.Models
         public MigrationConfiguration()
         {
             this.AutomaticMigrationsEnabled = true;
+            this.AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(UsersContext context)
@@ -42,11 +43,34 @@ namespace Flexpod.MVC.Models
             {
                 WebSecurity.CreateUserAndAccount("admin", "password", propertyValues: new
                 {
-                    EmailAddress = "info@flexpod.nl",
-                    IsLockedOut = false
+                    EmailAddress = "info@flexpod.nl"
                 });
             }
 #endif
+            // demo data
+            if (false == WebSecurity.UserExists("John"))
+            {
+                WebSecurity.CreateUserAndAccount("John", "******", propertyValues: new
+                {
+                    EmailAddress = "john.do@flexpod.nl"
+                });
+                // set the PasswordChangedDate of John
+                var johnId = WebSecurity.GetUserId("John");
+                var threeMonthsBack = DateTime.Now.AddMonths(-3);
+                var result = context.Database.ExecuteSqlCommand(
+                    "UPDATE webpages_Membership SET PasswordChangedDate = @p0 WHERE UserId = @p1",
+                    threeMonthsBack, johnId);
+            }
+            if (false == WebSecurity.UserExists("Jane"))
+            {
+                WebSecurity.CreateUserAndAccount("Jane", "******", propertyValues: new
+                {
+                    EmailAddress = "jane.do@flexpod.nl"
+                });
+            }
+            // lock-out the account by logging in 10 times with wrong password
+            for (int i = 0; i < 10; i++)
+                WebSecurity.Login("Jane", "WrongPassword");
         }
     }
 
@@ -58,7 +82,6 @@ namespace Flexpod.MVC.Models
         public int UserId { get; set; }
         public string UserName { get; set; }
         public string EmailAddress { get; set; }
-        public bool IsLockedOut { get; set; }
     }
 
     public class LocalPasswordModel
@@ -110,7 +133,7 @@ namespace Flexpod.MVC.Models
         [Display(Name = "E-mail address")]
         public string EmailAddress { get; set; }
 
-        [Display(Name = "Is locked out")]
-        public bool IsLockedOut { get; set; }
+        [Display(Name = "Last password changed")]
+        public DateTime LastPasswordChangedDate { get; set; }
     }
 }
