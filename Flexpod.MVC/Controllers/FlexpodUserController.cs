@@ -24,8 +24,7 @@ namespace Flexpod.MVC.Controllers
                         model.Password,
                         propertyValues: new
                         {
-                            EmailAddress = model.EmailAddress,
-                            IsLockedOut = false
+                            EmailAddress = model.EmailAddress
                         });
                     return Request.CreateResponse<FlexpodUserModel>(HttpStatusCode.Created, model);
                 }
@@ -45,6 +44,20 @@ namespace Flexpod.MVC.Controllers
                 }
             }            
             return Request.CreateResponse(HttpStatusCode.BadRequest, ModelState);
+        }
+
+        public HttpResponseMessage GetFlexpodUser()
+        {
+            var allUsers = new UsersContext().UserProfiles
+                .Select(x => new FlexpodUserModel { 
+                    UserName = x.UserName, 
+                    EmailAddress = x.EmailAddress,
+                }).ToArray();
+            foreach (var user in allUsers)
+            {
+                user.LastPasswordChangedDate = WebSecurity.GetPasswordChangedDate(user.UserName);
+            }
+            return Request.CreateResponse<FlexpodUserModel[]>(HttpStatusCode.OK, allUsers);
         }
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
